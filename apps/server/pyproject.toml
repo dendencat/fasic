@@ -1,0 +1,22 @@
+[project]
+name = "swipetune-server"
+version = "0.1.0"
+description = "SwipeTune FastAPI server"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi>=0.111",
+  "uvicorn[standard]>=0.30",
+  "pydantic>=2.7",
+  "pydantic-settings>=2.2",
+  "SQLAlchemy>=2.0",
+  # Optional for future tasks
+  "boto3>=1.34",
+]
+
+[tool.black]
+line-length = 100
+target-version = ["py311"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
