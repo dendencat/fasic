@@ -19,7 +19,7 @@ def test_get_tracks():
 
 
 def test_create_track():
-    response = client.post("/tracks/", params={"title": "Test Track", "artist": "Test Artist", "genre": "Pop"})
+    response = client.post("/tracks/", params={"title": "Test Track", "artist": "Test Artist", "genre": "Pop", "s3_key": "test.mp3"})
     assert response.status_code == 200
     data = response.json()
     assert "id" in data

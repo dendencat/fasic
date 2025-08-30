@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from contextlib import contextmanager
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, Session
 
 from .config import get_settings
 
@@ -18,6 +18,17 @@ def init_engine():
         _engine = create_engine(settings.database_url, future=True)
         _SessionLocal = sessionmaker(bind=_engine, autoflush=False, autocommit=False, future=True)
     return _engine
+
+
+def get_db() -> Session:
+    if _SessionLocal is None:
+        init_engine()
+    assert _SessionLocal is not None
+    db = _SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 
 @contextmanager

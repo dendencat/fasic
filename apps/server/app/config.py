@@ -9,7 +9,7 @@ class Settings(BaseSettings):
     api_port: int = Field(default=8080, alias="API_PORT")
 
     database_url: str = Field(
-        default="postgresql+psycopg://postgres:postgres@localhost:5432/swipetune",
+        default="postgresql+psycopg2://postgres:postgres@localhost:5433/swipetune",
         alias="DATABASE_URL",
     )
 

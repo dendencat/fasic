@@ -3,7 +3,7 @@ from __future__ import annotations
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
 from sqlalchemy.orm import Session
 
-from .db import session_scope
+from .db import get_db
 from .models import Upload
 from .s3 import get_s3_client
 
@@ -11,7 +11,7 @@ router = APIRouter(prefix="/uploads", tags=["uploads"])
 
 
 @router.post("/")
-def upload_file(file: UploadFile = File(...), user_id: str = "user1", db: Session = Depends(session_scope)):
+def upload_file(file: UploadFile = File(...), user_id: str = "user1", db: Session = Depends(get_db)):
     s3_client = get_s3_client()
     if not s3_client:
         raise HTTPException(status_code=500, detail="S3 client not available")
