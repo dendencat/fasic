@@ -7,6 +7,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from .config import get_settings
 from .db import init_engine
 from .s3 import get_s3_client
+from .tracks_router import router as tracks_router
+from .uploads_router import router as uploads_router
+from .swipes_router import router as swipes_router
 
 
 APP_VERSION = os.getenv("APP_VERSION", "0.1.0")
@@ -34,9 +37,21 @@ def create_app() -> FastAPI:
         # Prepare S3 client (optional at T1)
         get_s3_client()
 
+    app.include_router(tracks_router)
+    app.include_router(uploads_router)
+    app.include_router(swipes_router)
+
     @app.get("/health")
     def health():
-        return {"ok": True, "version": APP_VERSION}
+        # Test DB connection
+        try:
+            from .db import session_scope
+            with session_scope() as session:
+                session.execute("SELECT 1")
+            db_status = "ok"
+        except Exception:
+            db_status = "error"
+        return {"ok": True, "version": APP_VERSION, "db": db_status}
 
     return app
 

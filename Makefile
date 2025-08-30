@@ -1,6 +1,6 @@
 PROJECT_ROOT := $(shell pwd)
 
-.PHONY: up down gen-openapi
+.PHONY: up down gen-openapi test
 
 up:
 	@docker compose -f infra/docker-compose.yml --env-file .env up -d
@@ -17,4 +17,8 @@ import json
 open('OPENAPI.json','w').write(json.dumps(app.openapi(), indent=2))
 print('Wrote apps/server/OPENAPI.json')
 PY
+
+# Run tests
+test:
+	@cd apps/server && python -m pytest
 
